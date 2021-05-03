@@ -39,13 +39,13 @@ Including:
 Dataset: iris
 
 Optional Choices of Ensemble Pruning Methods:  
-name\_pru $\in$ \['ES', 'KP', 'KL', 'RE', 'OO', 'DREP', 'SEP', 'OEP', 'PEP', 'COMEP', 'DOMEP'\]
+name-pru ![\Large in](https://latex.codecogs.com/svg.latex?\Large&space;\in) \['ES', 'KP', 'KL', 'RE', 'OO', 'DREP', 'SEP', 'OEP', 'PEP', 'COMEP', 'DOMEP'\]
 
 e.g.,
 ```shell
-$ python main.py --nb-cls 31 --nb_pru 7 --name-pru COMEP --lam 0.5 --m 2
-$ python main.py --nb-cls 31 --nb_pru 7 --name-pru DOMEP --lam 0.5 --m 2
-$ python main.py --nb-cls 31 --nb_pru 7 --name-pru PEP --distributed --m 2
+$ python main.py --nb-cls 31 --nb-pru 7 --name-pru COMEP --lam 0.5 --m 2
+$ python main.py --nb-cls 31 --nb-pru 7 --name-pru DOMEP --lam 0.5 --m 2
+$ python main.py --nb-cls 31 --nb-pru 7 --name-pru PEP --distributed --m 2
 ```
 
 ## Cite
