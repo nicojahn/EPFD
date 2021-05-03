@@ -1,0 +1,3 @@
+[submodule "PyEnsemble"]
+	path = PyEnsemble
+	url = https://github.com/eustomaqua/PyEnsemble.git
