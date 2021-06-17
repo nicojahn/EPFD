@@ -72,57 +72,54 @@ def load_iris():
 
     return X_trn, y_trn, X_tst, y_tst
 
-
-def main(args):
-    nb_cls = args.nb_cls
-    nb_pru = args.nb_pru
-    name_pru = args.name_pru
-    distributed = args.distributed
-    lam = args.lam
-    m = args.m
-
-    X_trn, y_trn, _, _ = load_iris()
-
-
-    name_cls = neighbors.KNeighborsClassifier()
-    _, clfs = BaggingEnsembleAlgorithm(
-        X_trn, y_trn, name_cls, nb_cls)
-
-    y_insp = [i.predict(X_trn).tolist() for i in clfs]
-    rho = nb_pru / nb_cls
-
-
+def run_method(nb_pru, name_pru, distributed, lam, rho, m, y_validation, y_prediction):
+    classifiers = []
     if name_pru not in ['COMEP', 'DOMEP']:
-        since = time.time()
-        Pc = distributed_single_pruning(name_pru, y_trn, y_insp,
-                nb_cls, nb_pru, rho=rho)
-        Tc = time.time() - since
-        print("{:5s}: {:.4f}s, get {}".format(name_pru, Tc, Pc))
 
         if distributed:
             since = time.time()
-            Pd = distributed_pruning_methods(y_trn, y_insp,
+            classifiers = Pd = distributed_pruning_methods(y_validation, y_prediction,
                 nb_pru, m, name_pru, rho=rho)
             Td = time.time() - since
             print("{:5s}: {:.4f}s, get {}".format(name_pru, Td, Pd))
 
+        else:
+            since = time.time()
+            classifiers = Pc = distributed_single_pruning(name_pru, y_validation, y_prediction,
+                    nb_cls, nb_pru, rho=rho)
+            Tc = time.time() - since
+            print("{:5s}: {:.4f}s, get {}".format(name_pru, Tc, Pc))
+
     elif name_pru == 'COMEP':
         since = time.time()
-        Pc = COMEP_Pruning(np.array(y_insp).T.tolist(), nb_pru, y_trn, lam)
+        classifiers = Pc = COMEP_Pruning(np.array(y_prediction).T, nb_pru, y_validation, lam)
         Tc = time.time() - since
         print("{:5s}: {:.4f}s, get {}".format(name_pru, Tc, Pc))
 
     elif name_pru == 'DOMEP':
         since = time.time()
-        Pd = DOMEP_Pruning(np.array(y_insp).T.tolist(), nb_pru, m, y_trn, lam)
+        classifiers = Pd = DOMEP_Pruning(np.array(y_prediction).T, nb_pru, m, y_validation, lam)
         Td = time.time() - since
         print("{:5s}: {:.4f}s, get {}".format(name_pru, Td, Pd))
 
     else:
         raise ValueError("Please check the `name_pru`.")
 
+    return classifiers
+
+def main(args, y_validation, y_prediction):
+    #nb_cls = args.nb_cls # unused
+    nb_pru = args.nb_pru
+    name_pru = args.name_pru
+    distributed = args.distributed
+    lam = args.lam
+    m = args.m
+
+    nb_cls = len(y_validation)
+    rho = nb_pru / nb_cls
+    classifiers = run_method(nb_pru, name_pru, distributed, lam, rho, m, y_validation, y_prediction)
+    return classifiers
 
 if __name__ == "__main__":
     args = define_params(sys.argv[1:])
     main(args)
-
