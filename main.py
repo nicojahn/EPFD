@@ -13,7 +13,7 @@ from sklearn import datasets
 from sklearn import neighbors
 
 import numpy as np
-np.random.seed(4567)
+#np.random.seed(4567)
 
 from pyensemble.classify import BaggingEnsembleAlgorithm
 from data_distributed import (distributed_single_pruning,
