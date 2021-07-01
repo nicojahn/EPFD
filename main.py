@@ -74,6 +74,7 @@ def load_iris():
 
 def run_method(nb_pru, name_pru, distributed, lam, rho, m, y_validation, y_prediction):
     classifiers = []
+    nb_cls = len(y_validation)
     if name_pru not in ['COMEP', 'DOMEP']:
 
         if distributed:
