@@ -93,11 +93,6 @@ def main(args):
 
 
     if name_pru not in ['COMEP', 'DOMEP']:
-        since = time.time()
-        Pc = distributed_single_pruning(name_pru, y_trn, y_insp,
-                nb_cls, nb_pru, rho=rho)
-        Tc = time.time() - since
-        print("{:5s}: {:.4f}s, get {}".format(name_pru, Tc, Pc))
 
         if distributed:
             since = time.time()
@@ -105,6 +100,12 @@ def main(args):
                 nb_pru, m, name_pru, rho=rho)
             Td = time.time() - since
             print("{:5s}: {:.4f}s, get {}".format(name_pru, Td, Pd))
+        else:
+            since = time.time()
+            Pc = distributed_single_pruning(name_pru, y_trn, y_insp,
+                    nb_cls, nb_pru, rho=rho)
+            Tc = time.time() - since
+            print("{:5s}: {:.4f}s, get {}".format(name_pru, Tc, Pc))
 
     elif name_pru == 'COMEP':
         since = time.time()
