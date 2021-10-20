@@ -1,9 +1,9 @@
-numpy==1.21.3
-scipy==1.7.1
-scikit-learn==1.0
+numpy
+scipy
+scikit-learn
 Pillow
-pathos==0.2.8
-pympler==0.9
+pathos
+pympler
 pytest
 numba
 tensorflow==2.6.0
